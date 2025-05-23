@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ hero.name }}</title>
+</head>
+<body>
+    <h1>{{ hero.name }}</h1>
+    <img src="{{ hero.images.md }}">
+    <ul>
+        <li><strong>Universe:</strong> {{ hero.biography.publisher }}</li>
+        <li><strong>Age:</strong> Unknown</li>
+        <li><strong>Powers:</strong> {{ hero.work.occupation }}</li>
+        <li><strong>Intelligence:</strong> {{ hero.powerstats.intelligence }}</li>
+        <li><strong>Power:</strong> {{ hero.powerstats.power }}</li>
+        <li><strong>Enemy:</strong> Unknown</li>
+    </ul>
+    <a href="/">← Back</a>
+</body>
+</html>
