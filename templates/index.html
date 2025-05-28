@@ -6,27 +6,30 @@
 </head>
 <body>
     <h1>Superhero Gallery</h1>
+
     <form method="get">
-    <input type="text" name="search" placeholder="Search for a hero..." />
-    <button type="submit">Search</button>
-</form>
+        <input type="text" name="search" placeholder="Search for a hero..." value="{{ request.args.get('search', '') }}" />
+        <input type="number" name="min_power" placeholder="Min Power Level" min="0" max="100" value="{{ request.args.get('min_power', '') }}" />
+        <button type="submit">Search</button>
+    </form>
 
-{% if no_results %}
+  
     {% if no_results %}
-    <p>No heroes found matching your search.</p>
-    <a href="/" class="back-button">Back to All Heroes</a>
-{% endif %}
+        <p>No heroes found matching your search.</p>
+        <a href="/" class="back-button">Back to All Heroes</a>
+    {% endif %}
 
-{% endif %}
+    <div class="grid">
+        {% for hero in heroes %}
+            <div class="card" oncontextmenu="window.location='/hero/{{ hero.id }}'; return false;">
+                <img src="{{ hero.images.sm }}" alt="{{ hero.name }}">
+                <p>{{ hero.name }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
 
-<div class="grid">
-    {% for hero in heroes %}
-        <div class="card" oncontextmenu="window.location='/hero/{{ hero.id }}'; return false;">
-            <img src="{{ hero.images.sm }}" alt="{{ hero.name }}">
-            <p>{{ hero.name }}</p>
-        </div>
-    {% endfor %}
-</div>
 
 
 
