@@ -16,12 +16,26 @@ def fetch_heroes():
 @app.route('/')
 def index():
     heroes = fetch_heroes()
-    query = request.args.get('search', '').lower()
+    query = request.args.get('search', '').strip().lower()
+    min_power_input = request.args.get('min_power', '').strip()
     no_results = False
 
     if query:
         heroes = [h for h in heroes if query in h['name'].lower()]
-        no_results = len(heroes) == 0
+
+    if min_power_input:
+        try:
+            min_power = int(min_power_input)
+            filtered = []
+            for h in heroes:
+                power = h.get('powerstats', {}).get('power')
+                if isinstance(power, int) and power >= min_power:
+                    filtered.append(h)
+            heroes = filtered
+        except ValueError:
+            pass  
+
+    no_results = len(heroes) == 0
 
     return render_template("index.html", heroes=heroes, no_results=no_results)
 
@@ -40,29 +54,9 @@ def not_found(e):
         <p>The hero you are looking for does not exist.</p>
         <a href="/" class="back-button">Back to All Heroes</a>
     """, 404
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-@app.route('/')
-def index():
-    heroes = fetch_heroes()
-    query = request.args.get('search', '').lower()
-    min_power = request.args.get('min_power', '').strip()
-    no_results = False
-
-    if query:
-        heroes = [h for h in heroes if query in h['name'].lower()]
-
-    if min_power.isdigit():
-        min_power = int(min_power)
-        heroes = [
-            h for h in heroes
-            if h.get('powerstats', {}).get('power') and h['powerstats']['power'] >= min_power
-        ]
-
-    no_results = len(heroes) == 0
-
-    return render_template("index.html", heroes=heroes, no_results=no_results)
 
 
 
